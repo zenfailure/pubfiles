@@ -1,0 +1,180 @@
+tmux unbind-key -aT root
+tmux unbind-key -aT main
+tmux unbind-key -aT prefix
+tmux unbind-key -aT copy-mode
+tmux unbind-key -aT copy-mode-vi
+tmux unbind-key -aT resize-mode
+
+kmap main M-Enter new-window
+kmap main M-Tab select-pane -t :.+
+kmap main M-d detach-client
+
+kmap main M-. next-window
+kmap main M-, previous-window
+dmap main 'M->' switch-client -n
+dmap main 'M-<' switch-client -p
+
+kmap main M-1 select-window -t :=1
+kmap main M-2 select-window -t :=2
+kmap main M-3 select-window -t :=3
+kmap main M-4 select-window -t :=4
+kmap main M-5 select-window -t :=5
+kmap main M-6 select-window -t :=6
+kmap main M-7 select-window -t :=7
+kmap main M-8 select-window -t :=8
+kmap main M-9 select-window -t :=9
+kmap main M-0 select-window -t :=10
+
+kmap main 'M-!' swap-window -t 1
+kmap main 'M-@' swap-window -t 2
+kmap main 'M-#' swap-window -t 3
+kmap main 'M-$' swap-window -t 4
+kmap main 'M-%' swap-window -t 5
+kmap main 'M-^' swap-window -t 6
+kmap main 'M-&' swap-window -t 7
+kmap main 'M-*' swap-window -t 8
+kmap main 'M-(' swap-window -t 9
+kmap main 'M-)' swap-window -t 10
+
+kmap main M-q kill-pane
+kmap main M-Q kill-window
+
+kmap main M-o rotate-window -D
+
+dmap main 'M-\;' command-prompt
+dmap main 'M-:' run "$run reload_config"
+kmap main 'M-BSpace' send-prefix
+
+kmap main M-r split-window -h -c '#{pane_current_path}'
+kmap main M-t split-window -v -c '#{pane_current_path}'
+
+kmap main M-j select-pane -U
+kmap main M-k select-pane -D
+kmap main M-h select-pane -L
+kmap main M-l select-pane -R
+kmap main M-f resize-pane -Z
+
+kmap main M-H swap-pane -U
+kmap main M-L swap-pane -D
+
+kmap main M-u copy-mode -u
+
+kmap main M-i rotate-window -D
+
+kmap main M-z display-panes
+
+kmap main M-S choose-tree -wN
+dmap main M-s choose-tree -sN
+dmap main M-e run "$run choose_window"
+dmap main M-w choose-buffer
+dmap main M-W list-buffers
+kmap main M-b show-messages
+
+dmap main 'M-?' list-keys
+dmap main M-X refresh-client -S
+
+dmap main M-o run "$run xsel_paste_clipboard"
+dmap main M-p paste-buffer
+
+dmap main 'M-\' extrakto
+
+dmap main M-escape thumbs
+dmap main 'M-Escape' lastcmd
+dmap main 'M-`' run "$run logging_savebuffer"
+dmap main 'M-~' run "$run logging_screenshoot"
+dmap main M-g run "$run logging_clearpane"
+
+dmap main 'M-[' run "$run resurrect_save"
+dmap main 'M-]' run "$run resurrect_restore"
+
+dmap main M-x delete-buffer
+
+dmap main M-n run "$run mpc_next"
+dmap main M-Space mpc-toggle
+
+dmap main M-P run "$run alsa_master_up"
+dmap main M-N run "$run alsa_master_down"
+
+dmap main 'M--' "$run sys_suspend"
+dmap main 'M-_' "$run sys_hibernate"
+
+dmap main M-D kill-session
+# $run kill-session to kill both sessions
+dmap main M-a run "$run detach_ttys"
+dmap main M-A run "$run detach_nottys"
+
+kmap main M-m run "$run switch_sendkeys_mode"
+umap send-keys M-m run "$run switch_main_mode"
+
+# extrakto to XDG-OPEN/$EDITOR/COPY/PASTE/GOOGLESEARCH and more delimiters
+# (like cmdline or cmd output)
+# move pane/window to another session
+# toggling between remote/local session/mode
+# change session mode
+# clipmenu selection
+# change logging stuff directory
+# goto urgent window (like ncmpcpp/mutt/etc...)
+# goto window by name
+# goto urgent tmux window from windowManager
+# goto ncmpcpp/mutt/etc... from windowManager
+# map F1,F12 for what? move pane/window??
+
+
+#bind-key    -T prefix !       break-pane
+#bind-key    -T prefix $       command-prompt -I "#S" "rename-session '%%'"
+#bind-key    -T prefix ,       command-prompt -I "#W" "rename-window '%%'"
+#bind-key    -T prefix '       command-prompt -p index "select-window -t ':%%'"
+#bind-key    -T prefix .       command-prompt "move-window -t '%%'"
+#bind-key    -T prefix f       command-prompt "find-window '%%'"
+# marks, break-pane/window (moving them around) and linking
+#bind-key    -T prefix M       select-pane -M
+#bind-key    -T prefix m       select-pane -m
+
+
+kmap main 'M-=' switch-client -T resize-mode
+kmap resize-mode 1 select-layout even-horizontal '\;' switch-client -T resize-mode
+kmap resize-mode 2 select-layout even-vertical '\;' switch-client -T resize-mode
+kmap resize-mode 3 select-layout main-horizontal '\;' switch-client -T resize-mode
+kmap resize-mode 4 select-layout main-vertical '\;' switch-client -T resize-mode
+kmap resize-mode 5 select-layout tiled '\;' switch-client -T resize-mode
+kmap resize-mode h resize-pane -L '\;' switch-client -T resize-mode
+kmap resize-mode l resize-pane -R '\;' switch-client -T resize-mode
+kmap resize-mode j resize-pane -D '\;' switch-client -T resize-mode
+kmap resize-mode k resize-pane -U '\;' switch-client -T resize-mode
+kmap resize-mode H resize-pane -L 5 '\;' switch-client -T resize-mode
+kmap resize-mode L resize-pane -R 5 '\;' switch-client -T resize-mode
+kmap resize-mode J resize-pane -D 5 '\;' switch-client -T resize-mode
+kmap resize-mode K resize-pane -U 5 '\;' switch-client -T resize-mode
+kmap resize-mode q switch-client -T main
+kmap resize-mode 'M-=' switch-client -T main
+kmap resize-mode Escape switch-client -T main
+
+tmux unbind-key -aT copy-mode
+
+kmap copy-mode q send-keys -X cancel
+kmap copy-mode k send-keys -X cursor-up
+kmap copy-mode j send-keys -X cursor-down
+kmap copy-mode h send-keys -X cursor-left
+kmap copy-mode l send-keys -X cursor-right
+kmap copy-mode v send-keys -X begin-selection
+kmap copy-mode w send-keys -X next-word
+kmap copy-mode e send-keys -X next-word-end
+kmap copy-mode b send-keys -X previous-word
+kmap copy-mode W send-keys -X next-space
+kmap copy-mode E send-keys -X next-space-end
+kmap copy-mode B send-keys -X previous-space
+kmap copy-mode '[' send-keys -X previous-paragraph
+kmap copy-mode ']' send-keys -X next-paragraph
+kmap copy-mode 0 send-keys -X start-of-line
+kmap copy-mode \$ send-keys -X end-of-line
+kmap copy-mode g send-keys -X history-top
+kmap copy-mode G send-keys -X history-bottom
+kmap copy-mode n send-keys -X search-again
+kmap copy-mode u send-keys -X page-up
+kmap copy-mode d send-keys -X page-down
+kmap copy-mode M-u send-keys -X page-up
+kmap copy-mode M-d send-keys -X page-down
+
+kmap copy-mode y send-keys -X copy-selection-and-cancel
+kmap copy-mode c send-keys -X copy-pipe-and-cancel "xsel -ib"
+kmap copy-mode M-b jump

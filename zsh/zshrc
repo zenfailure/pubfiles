@@ -1,0 +1,65 @@
+stty -ixon
+
+POWERLEVEL9K_INSTANT_PROMPT=off
+
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=$HOME/.zhistory
+
+export FZF_DEFAULT_COMMAND=fzf-tmux
+
+if [[ ! -d ~/.zplug  ]]; then
+    git clone https://github.com/zplug/zplug ~/.zplug
+    source ~/.zplug/init.zsh && zplug --self-manage
+fi
+
+bindkey -e
+source ~/.zplug/init.zsh
+
+zplug 'zenfailure/pubfiles', dir:~/test
+zplug 'endaaman/lxd-completion-zsh'
+zplug 'jplitza/zsh-virsh-autocomplete'
+zplug 'zplug/zplug', hook-build:'zplug --self'
+zplug "b4b4r07/easy-oneliner", if:"which fzf"
+zplug "mafredri/zsh-async"
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug romkatv/powerlevel10k, as:theme, depth:1
+zplug "jimeh/tmuxifier", as:command, use:"bin/*"
+zplug "zsh-users/zsh-completions"
+#zplug "PythonNut/auto-fu.zsh", hook-load:"zle-line-init () {auto-fu-init;}; zle -N zle-line-init"
+#zplug marlonrichert/zsh-autocomplete
+zplug 'gitwatch/gitwatch', as:command, use:'gitwatch.sh', rename-to:gitwatch
+zplug hchbaw/zce.zsh, hook-load:'bindkey "^S" zce'
+zplug wyntau/fzf-zsh
+zplug Aloxaf/fzf-tab, hook-load:'enable-fzf-tab'
+zplug "~/.tmux", as:command, from:local, use:"bin/*"
+zplug "~/.scripts", as:command, from:local, use:"*/*"
+zplug "~/.bin", as:command, from:local, use:"*"
+zplug "~/.local/bin", as:command, from:local, use:"*"
+zplug "zpm-zsh/colorize"
+
+
+#if ! zplug check; then
+#    zplug install
+#fi
+#
+#zplug update
+zplug load
+
+if [[ ! "$USER" = root ]]; then
+    export GPG_TTY=$(tty)
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+
+    gpgconf --launch gpg-agent
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+fi
+
+for file in ~/.zsh.d/*; do
+    [[ -f "$file" ]] && source $file
+done
+
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

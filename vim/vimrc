@@ -1,0 +1,420 @@
+" Modifiers:
+" normal-mode:
+" g
+" \
+" hjkl: movement
+" HJKL: displacement
+" Chjkl:
+" Cu/Cd: half-page movement
+"
+" Ahjkl: window-movement
+" insert-mode:
+"   C\
+"   Ahjkl: window-movement
+"   Chjkl: char-movement
+"   Cu/Cd: half-page movement
+"   Cg: comment
+"   Cs: save
+"   Cf: format
+"   Cx: quit
+"   Ct:
+"   C<: indent left
+"   C>: indent right
+"   Ca: sneak
+"   C\: normal-mode <leader>
+"   :wq
+" Keys/Actions:
+" Format:
+" Save:
+" Quit:
+" Format-Save-Quit:
+" which-key-global:
+" Vista:
+"
+" {{{ Plug.vim deployment
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+let g:plug_dir = '~/.vim/plug'
+" }}}
+" {{{ Plugin list
+call plug#begin(g:plug_dir)
+" {{{ No configuration plugins
+" }}}
+" {{{ Mapping-less plugins
+" }}}
+" {{{ Plugins with default mappings
+" }}}
+" {{{ Themes
+" }}}
+Plug 'morhetz/gruvbox'
+Plug 'sjl/badwolf'
+Plug 'fxn/vim-monochrome'
+Plug 'Lokaltog/vim-monotone'
+"Plug 'junegunn/vim-easy-align'
+Plug 'vim-scripts/align'
+Plug 'vim-scripts/autoalign'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'Yggdroot/indentLine'
+Plug 'foriequal0/vim-autonumber'
+"Plug 'svermeulen/vim-cutlass'
+"Plug 'inkarkat/vim-EnhancedJumps'
+"Plug 'svermeulen/vim-yoink'
+Plug 'liuchengxu/vim-which-key'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'tpope/vim-unimpaired'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-rhubarb'
+Plug 'mhinz/vim-startify'
+Plug 'Chiel92/vim-autoformat'
+Plug 'chrisbra/Colorizer'
+"Plug 'wellle/targets.vim'
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-function'
+Plug 'kana/vim-textobj-entire'
+Plug 'Julian/vim-textobj-variable-segment'
+Plug 'rhysd/vim-textobj-anyblock'
+Plug 'thalesmello/vim-textobj-methodcall'
+Plug 'whatyouhide/vim-textobj-xmlattr'
+Plug 'inside/vim-textobj-jsxattr'
+Plug 'whatyouhide/vim-textobj-erb'
+Plug 'gilligan/textobj-gitgutter'
+Plug 'noctuid/evil-textobj-anyblock'
+Plug 'tpope/vim-surround'
+Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'chrisbra/unicode.vim'
+Plug 'cohama/lexima.vim'
+Plug 'preservim/nerdtree'
+Plug 'ryanoasis/vim-devicons'
+
+Plug 'glts/vim-magnum'
+Plug 'glts/vim-radical'
+
+Plug 'tmux-plugins/vim-tmux'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'roxma/vim-tmux-clipboard'
+
+Plug 'skywind3000/asyncrun.vim'
+Plug 'itchyny/lightline.vim'
+Plug 'albertomontesg/lightline-asyncrun'
+Plug 'sinetoami/lightline-hunks'
+Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'mengelbrecht/lightline-bufferline'
+Plug 'maximbaz/lightline-trailing-whitespace'
+Plug 'maximbaz/lightline-ale'
+Plug 'Akin909/lightline-statuslinetabs'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'osyo-manga/vim-over'
+Plug 'haya14busa/is.vim'
+Plug 'junegunn/fzf.vim'
+Plug 'dominickng/fzf-session.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+Plug 'liuchengxu/vista.vim'
+Plug 'w0rp/ale'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+Plug 'prabirshrestha/asyncomplete-file.vim'
+Plug 'prabirshrestha/asyncomplete-omni.vim'
+Plug 'tsufeki/asyncomplete-fuzzy-match', { 'do': 'cargo build --release' }
+Plug 'Shougo/echodoc.vim'
+Plug 'szw/vim-maximizer'
+Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-commentary'
+Plug 'dbarsam/vim-rainbow-parentheses'
+Plug 'junegunn/vim-peekaboo'
+Plug 'justinmk/vim-sneak'
+Plug 'inside/vim-search-pulse'
+Plug 'chrisbra/vim-zsh'
+Plug 'Valodim/vim-zsh-completion'
+Plug 'vim-scripts/CRefVim'
+Plug 'vitalk/vim-shebang'
+call plug#end()
+" }}}
+" {{{ Vim options
+set nocompatible
+syntax on
+filetype plugin indent on
+set autoread
+set encoding=utf-8
+set showcmd
+set noshowmode
+set laststatus=2
+set showtabline=2
+set list
+let &listchars = 'tab:▶ ,trail:␣'
+let &fillchars = 'vert:│,fold:─'
+set number
+set wrap
+set modeline
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+set textwidth=79
+
+set nohlsearch
+set cursorline
+set scrolloff=10
+set colorcolumn=0
+set linebreak
+set showbreak=ﬀ
+set showmatch
+set nohidden
+set nocindent
+set autoindent
+set ignorecase
+set smartindent
+set smartcase
+set backspace=indent,eol,start
+set ruler
+set nowildmenu
+set nodigraph
+set copyindent
+set preserveindent
+set nobackup
+set noswapfile
+set nowritebackup
+set writeany
+set foldenable
+set foldmethod=marker
+set cino+=(0
+" }}}
+" {{{ Highlighting and colorschemes
+set background=dark
+colorscheme gruvbox
+
+let leader = '\'
+
+let g:rainbow_activate = 1
+
+highlight   cursorline     term=NONE   cterm=NONE   ctermbg=234   ctermfg=NONE
+highlight   colorcolumn    term=NONE   cterm=NONE   ctermbg=235   ctermfg=NONE
+highlight   cursorcolumn   term=NONE   cterm=bold   ctermbg=235   ctermfg=NONE
+highlight   margin         term=NONE   cterm=NONE   ctermbg=red   ctermfg=yellow
+highlight   blanks         term=NONE   cterm=NONE   ctermbg=235   ctermfg=yellow
+highlight   vertsplit      term=NONE   cterm=NONE   ctermbg=NONE  ctermfg=NONE
+highlight   normal         term=NONE   cterm=NONE   ctermbg=NONE  ctermfg=255
+highlight   linenr         term=NONE   cterm=NONE   ctermbg=235   ctermfg=NONE
+
+syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL conceal cchar=␣
+setl conceallevel=2 concealcursor=nv
+match Margin /\%>78v.+/
+match Blanks /\s\+\%#\@<!$\| \+\ze\t\|[^\t]\zs\t\+\|^\t*\zs \+/
+" }}}
+" {{{ Plugin options and configuration
+" {{{2 Lightline configuration
+let g:lightline = {}
+let g:lightline.colorscheme = 'gruvbox'
+let g:lightline.mode_map = {
+            \ 'n': 'N',
+            \ 'i': 'I',
+            \ 'R': 'R',
+            \ 'v': 'v',
+            \ 'V': 'V',
+            \ '\<C-v>': '^V',
+            \ 'c': 'C',
+            \ 's': 's',
+            \ 'S': 'S',
+            \ '\<C-s>': '^S',
+            \ 't': 'T',
+            \ }
+let g:lightline.seprator = {
+            \ 'left': '',
+            \ 'right': '',
+            \ }
+let g:lightline.subseparator = {
+            \ 'left': '│',
+            \ 'right': '│',
+            \ }
+let g:lightline.enable = {
+            \ 'statusline': 1,
+            \ 'tabline': 1,
+            \ }
+let g:lightline.component_expand = {
+            \ 'buffers': 'lightline#bufferline#buffers',
+            \ 'trailing': 'lightline#trailing_whitespace#component',
+            \ 'linter_checking': 'lightline#ale#checking',
+            \ 'linter_warnings': 'lightline#ale#warnings',
+            \ 'linter_errors': 'lightline#ale#errors',
+            \ 'linter_ok': 'lightline#ale#ok',
+            \ 'statuslinetabs': 'lightline#statuslinetabs#show',
+            \ }
+let g:lightline.component_type = {
+            \ 'buffers': 'tabsel',
+            \ 'trailing': 'error',
+            \ 'linter_checking': 'left',
+            \ 'linter_warnings': 'warning',
+            \ 'linter_errors': 'error',
+            \ 'linter_ok': 'left',
+            \ 'statuslinetabs': 'tabsel'
+            \ }
+let g:lightline.tabline = {
+            \ 'left': [
+            \           [ 'buffers'  ],
+            \         ],
+            \ 'right': [
+            \          ],
+            \ }
+let g:lightline.tab = {
+            \ 'active': [ 'tabnum'  ],
+            \ 'inactive': [ 'tabnum'  ],
+            \ }
+let g:lightline#bufferline#show_number = 2
+let g:lightline#bufferline#shorten_path = 0
+let g:lightline#bufferline#uname = '*'
+let g:lightline#trailing_whitespace#indicator = '∙'
+let g:lightline#statuslinetabs#tab_number_icons = {
+            \ 1: '1:',
+            \ 2: '2:',
+            \ 3: '3:',
+            \ 4: '4:',
+            \ 5: '5:',
+            \ 6: '6:',
+            \ 7: '7:',
+            \ 8: '8:',
+            \ 9: '9:',
+            \ 10: '10:',
+            \ }
+let g:lightline.active = {
+            \ 'left': [
+            \           [ 'mode', 'paste'  ],
+            \           [ 'gitbranch'  ],
+            \           [ 'statuslinetabs' ]
+            \         ],
+            \ 'right': [
+            \    [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok'  ],
+            \    [ 'trailing'  ],
+            \    [ 'lineinfo', 'percent'  ],
+            \    [ 'fileformat', 'filetype', 'fileencoding'  ],
+            \          ],
+            \ }
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_warnings = "\uf071"
+let g:lightline#ale#indicator_errors = "\uf05e"
+let g:lightline#ale#indicator_ok = "\uf00c"
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%][%severity%] %s'
+let g:ale_close_preview_on_insert = 1
+let g:ale_completion_enabled = 0
+let g:ale_cursor_detail = 1
+let g:ale_list_window_size = 5
+let g:ale_lint_on_text_changed = 'normal'
+nmap <Leader>1 <Plug>lightline#bufferline#go(1)
+nmap <Leader>2 <Plug>lightline#bufferline#go(2)
+nmap <Leader>3 <Plug>lightline#bufferline#go(3)
+nmap <Leader>4 <Plug>lightline#bufferline#go(4)
+nmap <Leader>5 <Plug>lightline#bufferline#go(5)
+nmap <Leader>6 <Plug>lightline#bufferline#go(6)
+nmap <Leader>7 <Plug>lightline#bufferline#go(7)
+nmap <Leader>8 <Plug>lightline#bufferline#go(8)
+nmap <Leader>9 <Plug>lightline#bufferline#go(9)
+nmap <Leader>0 <Plug>lightline#bufferline#go(10)
+" }}}
+" {{{2 FZF configuration
+" }}}
+" {{{2 Lsp configuration
+
+function! AppendModeline()
+    let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
+                \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
+    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+    call append(line("$"), l:modeline)
+endfunction
+
+if executable('pyls')
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'pyls',
+                \ 'cmd': {server_info->['pyls']},
+                \ 'whitelist': ['python']
+                \ })
+endif
+
+if executable('lua-language-server')
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'lua-language-server',
+                \ 'cmd': {
+                \ server_info->['lua-language-server']
+                \ },
+                \ 'whitelist': [ 'lua' ],
+                \ })
+endif
+
+if executable('ccls')
+    au User lsp_setup call lsp#register_server({
+                \ 'name': 'ccls',
+                \ 'cmd': {
+                \ server_info->['ccls']
+                \ },
+                \ 'initialization_options': {
+                \ 'cacheDirectory': '/tmp/ccls/cache',
+                \ 'highlight': {
+                \ 'lsRanges': v:true,
+                \ },
+                \ },
+                \ 'whitelist': [ 'c', 'cpp', 'objc', 'objcpp', 'cc' ],
+                \ })
+endif
+
+let g:lsp_diagnostics_enabled = 0
+let g:lsp_signs_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 0
+let g:lsp_highlights_enabled = 0
+let g:asyncomplete_auto_popup = 1
+set completeopt-=preview
+set shortmess+=c
+
+let g:echodoc#enable_at_startup = 1
+" }}}
+" {{{2 LspHighlight configuration
+" }}}
+" {{{2 Ale configuration
+" }}}
+" {{{2 Asyncomplete configuration
+" }}}
+" {{{2 UltiSnips configuration
+" }}}
+" {{{2 VimSneak configuration
+" }}}
+" {{{ Echodoc configuration
+" }}}
+" {{{ VimWhichKey configuration
+nnoremap <silent> <leader> :<c-u>WhichKey '<Bslash>'<CR>
+" }}}
+" {{{
+" }}}
+" {{{ Mappings
+" {{{ Normal mappings
+
+nmap <silent> <leader>s <Plug>Sneak_s
+nmap <silent> <leader>S <Plug>Sneak_S
+
+" }}}
+" {{{ Insert mappings
+" }}}
+" {{{ Cmdline mappings
+" }}}
+" }}}
+
+"au BufWrite * :Autoformat
+"let g:autoformat_autoindent = 0
+"let g:autoformat_retab = 0
+"let g:autoformat_remove_trailing_spaces = 0
+
+let g:formatdef_lua = '"/home/maiz/.luarocks/bin/lua-format"'
+let g:formatters_lua = [ 'lua' ]

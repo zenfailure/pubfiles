@@ -1,0 +1,42 @@
+- hosts: localhost
+  tasks:
+  - name: symlink zshrc
+    file:
+      src: "{{ playbook_dir }}/zsh/zshrc"
+      dest: "~/.zshrc"
+      state: link
+  - name: symlink zsh.d
+    file:
+      src: "{{ playbook_dir }}/zsh/zsh.d"
+      dest: "~/.zsh.d"
+      state: link
+  - name: symlink p10k.zsh
+    file:
+      src: "{{ playbook_dir }}/zsh/p10k.zsh"
+      dest: "~/.p10k.zsh"
+      state: link
+  - name: symlink pam_environment
+    file:
+      src: "{{ playbook_dir }}/zsh/pam_environment"
+      dest: "~/.pam_environment"
+      state: link
+  - name: symlink vimrc
+    file:
+      src: "{{ playbook_dir }}/vim/vimrc"
+      dest: "~/.vimrc"
+      state: link
+  - name: symlink tmux directory
+    file:
+      src: "{{ playbook_dir }}/tmux/tmux"
+      dest: "~/.tmux"
+      state: link
+  - name: symlink tmux.conf
+    file:
+      src: "{{ playbook_dir }}/tmux/tmux.conf"
+      dest: "~/.tmux.conf"
+      state: link
+  - name: symlink tmux.sh
+    file:
+      src: "{{ playbook_dir}}/tmux/tmux.conf.sh"
+      dest: "~/.tmux.conf.sh"
+      state: link

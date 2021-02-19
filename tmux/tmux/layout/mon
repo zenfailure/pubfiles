@@ -1,0 +1,15 @@
+glances
+netstat
+aria2c
+netactivity
+lsof
+htop
+docker top
+lxd top
+libvirt top
+tshark/tcpdump
+vnstat
+nmon
+iotop
+iostat
+vmstat

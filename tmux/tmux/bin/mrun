@@ -16,6 +16,9 @@ xsel_paste_clipboard() {
     tmux paste-buffer
 }
 
+hit_lastprompt() {
+    local PROMPTCHAR='❯'
+}
 
 logging_toggle() {
     if [[ -e /tmp/tmux_logging_toggled ]]; then

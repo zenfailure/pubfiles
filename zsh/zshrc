@@ -14,40 +14,74 @@ export FZF_DEFAULT_COMMAND=fzf-tmux
 
 if [[ ! -d ~/.zplug  ]]; then
     git clone https://github.com/zplug/zplug ~/.zplug
-    source ~/.zplug/init.zsh && zplug --self-manage
 fi
+source ~/.zplug/init.zsh #&& zplug --self-manage
 
+# if [[ ! -d ~/.zinit ]]; then
+#     git clone https://github.com/zdharma/zinit ~/.zinit/bin
+# fi
+
+# source ~/.zinit/bin/zinit.zsh
+# autoload -Uz _zinit
+# (( ${+_comps}  )) && _comps[zinit]=_zinit
+# zinit self-update
 bindkey -e
-source ~/.zplug/init.zsh
 
-zplug 'zenfailure/pubfiles', dir:'~/.cfg/pubfiles'
+zplug 'laktak/extrakto',               as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-extrakto"
+zplug 'wfxr/tmux-fzf-url',             as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-fzf-url"
+zplug 'IngoMeyer441/tmux-easy-motion', as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-easy-motion", hook-build: "ln -s easy_motion.tmux easy-motion.tmux"
+zplug 'fcsonline/tmux-thumbs',         as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-thumbs", hook-build: "ln -s tmux-thumbs.tmux thumbs.tmux"
+zplug 'tmux-plugins/tmux-logging',     as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-logging"
+zplug 'tmux-plugins/tmux-copycat',     as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-copycat"
+zplug 'tmux-plugins/tmux-yank',        as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-yank"
+# source ~/.zplug/init.zsh
+
+#zplug 'inconshreveable/ngrok', as:command, use:'ngrok',
+
+zplug 'ram-on/imgurbash2',   as:command, use:'imgurbash2'
+zplug 'passff/passff-host',  as:command, ignore:'*', hook-build: "sh src/install_host_app.sh firefox"
+zplug 'samhh/bukubrow-host', as:command, ignore:'*', hook-build: "make build-linux-x64 && cd release && unzip build-linux-x64.zip && ./bukubrow-linux-x64 --install-firefox"
+
+zplug 'laktak/extrakto',               as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-extrakto"
+zplug 'wfxr/tmux-fzf-url',             as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-fzf-url"
+zplug 'IngoMeyer441/tmux-easy-motion', as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-easy-motion", hook-build: "ln -s easy_motion.tmux easy-motion.tmux"
+zplug 'fcsonline/tmux-thumbs',         as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-thumbs", hook-build: "ln -s tmux-thumbs.tmux thumbs.tmux"
+zplug 'tmux-plugins/tmux-logging',     as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-logging"
+zplug 'tmux-plugins/tmux-copycat',     as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-copycat"
+zplug 'tmux-plugins/tmux-yank',        as:command, ignore:'*', dir:"~/.tmux/plugins/tmux-yank"
+
+zplug 'zplug/zplug',         hook-build:'zplug --self-manage'
+zplug '~/.cfg/pubfiles/zsh', as:command, from:local, use:"dotsync"
+zplug '~/.tmux/bin',         as:command, from:local, use:"*"
+zplug '~/.scripts',          as:command, from:local, use:"*/*"
+zplug '~/.bin',              as:command, from:local, use:"*"
+zplug '~/.local/bin',        as:command, from:local, use:"*"
+zplug "jimeh/tmuxifier",     as:command, use:"bin/*"
+zplug 'gitwatch/gitwatch',   as:command, use:'gitwatch.sh', rename-to:'gitwatch'
+
 zplug 'endaaman/lxd-completion-zsh'
 zplug 'jplitza/zsh-virsh-autocomplete'
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
 zplug "b4b4r07/easy-oneliner", if:"which fzf"
 zplug "mafredri/zsh-async"
-zplug "zsh-users/zsh-syntax-highlighting"
+#zplug "zsh-users/zsh-syntax-highlighting"
 zplug romkatv/powerlevel10k, as:theme, depth:1
-zplug "jimeh/tmuxifier", as:command, use:"bin/*"
 zplug "zsh-users/zsh-completions"
-zplug 'gitwatch/gitwatch', as:command, use:'gitwatch.sh', rename-to:gitwatch
-zplug hchbaw/zce.zsh, hook-load:'bindkey "^S" zce'
+#zplug hchbaw/zce.zsh, hook-load:'bindkey "^S" zce'
 zplug wyntau/fzf-zsh
-zplug '~/.tmux', as:command, from:local, use:"bin/*"
-zplug '~/.scripts', as:command, from:local, use:"*/*"
-zplug '~/.bin', as:command, from:local, use:"*"
-zplug '~/.local/bin', as:command, from:local, use:"*"
-zplug 'zpm-zsh/colorize'
+#zplug 'zpm-zsh/colorize'
+
 #zplug marlonrichert/zsh-autocomplete
 zplug 'Aloxaf/fzf-tab', hook-load:'enable-fzf-tab'
+zplug 'zdharma/fast-syntax-highlighting'
 
+export PATH=~/.local/bin:$PATH
 
-if ! zplug check; then
-    zplug install
-    zplug update
-fi
+ if ! zplug check; then
+     zplug install
+     zplug update
+ fi
 
-zplug load
+ zplug load
 
 if [[ ! "$USER" = root ]]; then
     export GPG_TTY=$(tty)
@@ -57,8 +91,8 @@ if [[ ! "$USER" = root ]]; then
     gpg-connect-agent updatestartuptty /bye >/dev/null
 fi
 
-#for file in ~/.zsh.d/*; do
-#    [[ -f "$file" ]] && source $file
-#done
+for file in ~/.zsh.d/*; do
+    [[ -f "$file" ]] && source $file
+done
 
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

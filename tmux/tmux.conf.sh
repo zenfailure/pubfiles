@@ -15,7 +15,7 @@ sh="/bin/zsh"
 tmux="/bin/tmux"
 
 TMUX_CONFIG_DIR="$HOME/.tmux"
-TMUX_PLUGIN_DIR="$TMUX_CONFIG_DIR/plugin"
+TMUX_PLUGIN_DIR="$TMUX_CONFIG_DIR/plugins"
 TMUX_LAYOUT_DIR="$TMUX_CONFIG_DIR/layout"
 TMUX_BIN_DIR="$TMUX_CONFIG_DIR/bin"
 
@@ -24,12 +24,13 @@ run="$TMUX_BIN_DIR/mrun"
 declare -A TMUX_PLUGINS
 
 TMUX_PLUGINS=(
-    [extrakto]="extrakto"
+    [extrakto]="tmux-extrakto"
     [logging]="tmux-logging"
     [thumbs]="tmux-thumbs"
     [yank]="tmux-yank"
-    [jump]="tmux-jump"
     [copycat]="tmux-copycat"
+    [easy-motion]="tmux-easy-motion"
+    [fzf-url]="tmux-fzf-url"
 )
 
 # Loading plugins, kind of dangerous...

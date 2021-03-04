@@ -22,10 +22,11 @@ run="$TMUX_BIN_DIR/mrun"
 declare -A TMUX_PLUGINS
 
 TMUX_PLUGINS=(
-    [extrakto]="extrakto"
+    [extrakto]="tmux-extrakto"
     [logging]="tmux-logging"
     [thumbs]="tmux-thumbs"
     [yank]="tmux-yank"
-    [jump]="tmux-jump"
     [copycat]="tmux-copycat"
+    [easy-motion]="tmux-easy-motion"
+    [fzf-url]="tmux-fzf-url"
 )

@@ -1,42 +1,74 @@
 - hosts: localhost
   tasks:
+  - name: symlink custom bin directory
+    file:
+      src: "{{ playbook_dir }}/zsh/bin"
+      dest: "~/.bin"
+      state: link
+      force: yes
   - name: symlink zshrc
     file:
       src: "{{ playbook_dir }}/zsh/zshrc"
       dest: "~/.zshrc"
       state: link
+      force: yes
+  - name: symlink zplugrc
+    file:
+      src: "{{ playbook_dir}}/zsh/zplugrc"
+      dest: "~/.zplugrc"
+      state: link
+      force: yes
+  - name: symlink zinitrc
+    file:
+      src: "{{ playbook_dir}}/zsh/zinitrc"
+      dest: "~/.zinitrc"
+      state: link
+      force: yes
   - name: symlink zsh.d
     file:
       src: "{{ playbook_dir }}/zsh/zsh.d"
       dest: "~/.zsh.d"
       state: link
+      force: yes
   - name: symlink p10k.zsh
     file:
       src: "{{ playbook_dir }}/zsh/p10k.zsh"
       dest: "~/.p10k.zsh"
       state: link
-  - name: symlink pam_environment
+      force: yes
+  - name: symlink profile
     file:
-      src: "{{ playbook_dir }}/zsh/pam_environment"
-      dest: "~/.pam_environment"
+      src: "{{ playbook_dir }}/zsh/profile"
+      dest: "~/.profile"
       state: link
+      force: yes
+  - name: symlink zprofile
+    file:
+      src: "~/.profile"
+      dest: "~/.zprofile"
+      state: link
+      force: yes
+  - name: symlink bash_profile
+    file:
+      src: "~/.profile"
+      dest: "~/.bash_profile"
+      state: link
+      force: yes
   - name: symlink vimrc
     file:
       src: "{{ playbook_dir }}/vim/vimrc"
       dest: "~/.vimrc"
       state: link
+      force: yes
   - name: symlink tmux directory
     file:
-      src: "{{ playbook_dir }}/tmux/tmux"
+      src: "{{ playbook_dir }}/tmux"
       dest: "~/.tmux"
       state: link
+      force: yes
   - name: symlink tmux.conf
     file:
       src: "{{ playbook_dir }}/tmux/tmux.conf"
       dest: "~/.tmux.conf"
       state: link
-  - name: symlink tmux.sh
-    file:
-      src: "{{ playbook_dir}}/tmux/tmux.conf.sh"
-      dest: "~/.tmux.conf.sh"
-      state: link
+      force: yes

@@ -1,0 +1,73 @@
+#!/usr/bin/env zsh
+
+declare -A repos
+
+repos=(
+    pubfiles ~/.cfg/pubfiles
+    secfiles ~/.cfg/secfiles
+    dotfiles ~/.cfg/dotfiles
+    tarfiles ~/.cfg/tarfiles
+    sysfiles ~/.cfg/sysfiles
+    zipfiles ~/.cfg/zipfiles
+)
+
+push_repo() {
+    local r="${repos[$1]}"
+    exists_repo "$1"
+    cd "$r"
+    git add .
+    git commit -m "dotsync auto-commit ($(date '+%Y-%m-%d %H:%M:%S'))"
+    git push -u origin master
+    cd -
+    return 0
+}
+
+pull_repo() {
+    local r="${repos[$1]}"
+    exists_repo "$1"
+    cd "$r"
+    git pull origin master
+    cd -
+    return 0
+}
+
+repo_status() {
+    local r="${repos[$1]}"
+    exists_repo "$1"
+    cd "$r"
+    git status -uno
+    cd -
+    return 0
+}
+
+exists_repo() {
+    for repo in ${(k)repos}; do
+        if [[ "$1" == "$repo" ]]; then
+            return 0
+        fi
+    done
+    echo "Repo $1 is not in the repo list."
+    exit 1
+}
+
+main() {
+    if [[ "$2" == all ]]; then
+        for repo in ${(k)repos}; do
+            echo ==== "$1"
+            [[ "$1" == pull ]] && pull_repo "$repo" && continue
+            [[ "$1" == push ]] && push_repo "$repo" && continue
+            [[ "$1" == status ]] && repo_status "$repo" && continue
+            echo "Unrecognized command. Try again."
+            exit 1
+        done
+        exit 0
+    else
+        [[ "$1" == pull ]] && exists_repo "$2" && pull_repo "$2" && exit 0
+        [[ "$1" == push ]] && exists_repo "$2" && push_repo "$2" && exit 0
+        [[ "$1" == status ]] && exists_repo "$2" && repo_status "$2" && exit 0
+        echo "Unrecognized command or unexistent repo. Try again."
+        exit 1
+    fi
+}
+
+main "$@"

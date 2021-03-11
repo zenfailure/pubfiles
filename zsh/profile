@@ -1,0 +1,28 @@
+appendpath () {
+    case ":$PATH:" in
+        *:"$1":*)
+            ;;
+        *)
+            PATH="${PATH:+$PATH:}$1"
+    esac
+}
+
+appendpath "$HOME/.local/bin"
+appendpath "$HOME/.bin"
+
+unset appendpath
+
+export PATH
+export EDITOR=vim
+export VISUAL=vim
+export PAGER=less
+export LESS="-RFX"
+export LESSOPEN="|lesspipe %s"
+export BROWSER="firefox -p main"
+#export MAIL="$HOME/.mail/mailbox/INBOX"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DATA_HOME="$HOME/.local/share"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$HOME/.dbus-session"
+export SVDIR="$HOME/.usv"
+export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"

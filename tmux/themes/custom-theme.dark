@@ -1,0 +1,183 @@
+default_bg="#303030"
+default_fg="#000000"
+
+winlist_bg="#303030"
+winlist_fg="#909090"
+
+winlist_status_format="#I:#W"
+winlist_status_current_format=" #I:#W "
+
+winlist_status_bg="#303030"
+winlist_status_fg="#909090"
+
+winlist_status_current_bg="#00afff"
+winlist_status_current_fg="#000000"
+
+winlist_normal_bg="#151515"
+winlist_normal_fg="#909090"
+
+winlist_focus_bg="#c0c0c0"
+winlist_focus_fg="#000000"
+
+# window-list frame when monitor-activity hits
+winlist_urgent_bg=$winlist_status_bg
+winlist_urgent_fg="#00afff"
+
+# window-list frame when monitor-bell hits
+winlist_bell_bg=$winlist_status_bg
+winlist_bell_fg="#afff00"
+
+winlist_lastwin_bg=$winlist_status_bg
+winlist_lastwin_fg=$winlist_status_fg
+
+status_left_bg="colour11"
+status_left_fg="${default_fg}"
+
+status_right_bg="colour11"
+status_right_fg="${default_fg}"
+
+status_right_format=" ❐ #S #{?session_many_attached,(#{session_attached}) ,}"
+
+message_bg="yellow"
+message_fg="${default_fg}"
+message_command_bg="${message_bg}"
+message_command_fg="${message_fg}"
+
+mode_bg="yellow"
+mode_fg="${default_fg}"
+pane_bg="none"
+pane_fg="none"
+pane_focus_bg="none"
+pane_focus_fg="none"
+pane_active_bg="none"
+pane_active_fg="none"
+
+###############################################################################
+
+display_panes_active_colour="#000000"
+display_panes_colour="#a0a0a0"
+message_command_style="bg=${message_command_bg},fg=${message_command_fg}"
+message_style="bg=${message_bg},fg=${message_fg}"
+set_titles_string="For now"
+status_left_style="bg=${status_left_bg},fg=${status_left_fg},bold"
+status_right_style="bg=${status_right_bg},fg=${status_right_fg},bold"
+status_style="bg=${default_bg},fg=${default_fg}"
+automatic_rename_format="Rename for now"
+clock_mode_colour="red"
+mode_style="bg=${mode_bg},fg=${mode_fg},bold"
+pane_active_border_style="fg=#00afff"
+pane_border_format=" #{command} "
+pane_border_style="fg=#444444"
+window_active_style="none"
+window_status_activity_style="bg=${winlist_urgent_bg},fg=${winlist_urgent_fg}"
+window_status_bell_style="bg=${winlist_bell_bg},fg=${winlist_bell_fg}"
+window_status_current_style="bg=${winlist_focus_bg},fg=${winlist_focus_fg},bold"
+window_status_last_style="bg=${winlist_lastwin_bg},fg=${winlist_lastwin_fg}"
+window_status_separator=""
+window_status_style="default"
+window_style="default"
+
+#########################################################################
+
+window_status_current_format=$(block \
+    "$winlist_status_current_format" \
+    $winlist_status_current_bg \
+    $winlist_status_current_fg \
+    $default_bg \
+    PRE WIN)
+
+window_status_format=$(block \
+    "$winlist_status_format" \
+    $winlist_status_bg \
+    $winlist_status_fg \
+    $default_bg \
+    PRE WIN)
+
+
+session_name='#S'
+clients_count='#{session_attached}'
+
+network_block=" #(mynetinfo) "
+connectivity_block=" #(connectivity) "
+mpd_block="  #(mpc current) "
+wifi_status=" #(~/.bin/wifi wlan0) "
+emails_block=" #(~/.bin/emails) "
+battery_status=" #(~/.bin/battery) "
+publicip_text=" #(~/.bin/public-ip) "
+
+wifi_bg="#151515"
+wifi_fg="#ffffff"
+battery_bg="#881177"
+battery_fg="#ffffff"
+mpd_block_bg="#00af25"
+mpd_block_fg="#ffffff"
+emails_block_bg="#af00a0"
+emails_block_fg="#000000"
+username_block_bg="#af0000"
+hostname_block_bg="#afafaf"
+username_block_fg="#ffffff"
+hostname_block_fg="#000000"
+publicip_bg="#303030"
+publicip_fg="#ffffff"
+
+publicip=$(block \
+    "$publicip_text" \
+    $publicip_bg \
+    $publicip_fg \
+    $default_bg  \
+    BOTH)
+
+wifi=$(block \
+    "$wifi_status" \
+    $wifi_bg \
+    $wifi_fg \
+    $default_bg \
+    BOTH)
+
+battery=$(block \
+    "$battery_status" \
+    $battery_bg \
+    $battery_fg \
+    $default_bg \
+    BOTH)
+
+currentsong=$(block \
+    "$mpd_block" \
+    $mpd_block_bg \
+    $mpd_block_fg \
+    $default_bg \
+    BOTH)
+
+emails=$(block \
+    "$emails_block" \
+    $emails_block_bg \
+    $emails_block_fg \
+    $default_bg \
+    BOTH)
+
+
+username=$(block \
+    "$username_block" \
+    $username_block_bg \
+    $username_block_fg \
+    $default_bg \
+    BOTH
+)
+
+hostname=$(block \
+    "$hostname_block" \
+    $hostname_block_bg \
+    $hostname_block_fg \
+    $default_bg \
+    PRE)
+
+session=$(block \
+    "$status_right_format" \
+    $status_right_bg \
+    $status_right_fg \
+    $default_bg \
+    BOTH)
+
+status_left="${publicip}"
+status_right="${session}"
+#status_right="${publicip}${wifi}${currentsong}${emails}${session}${battery}"

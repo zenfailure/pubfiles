@@ -1,0 +1,5 @@
+#!/bin/sh
+
+user=${1-zenfailure}
+
+curl -s "https://api.github.com/users/${user}/repos" | jq '.[]|.html_url'

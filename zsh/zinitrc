@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+
+if [[ ! -d "$HOME/.zplug"  ]]; then
+    git clone 'https://github.com/zplug/zplug' "$HOME/.zplug"
+fi
+
+source "$HOME/.zplug/init.zsh"
+
+# browserpass files
+# rofication files
+# zplug '~/rofication', as:command, from:local, ignore:'*', use:'rofication-daemon.py', hook-build: 'ln -s rofication-daemon.py rofication-daemon'
+
+#zplug 'ram-on/imgurbash2',   as:command, use:'imgurbash2'
+#zplug 'passff/passff-host',  as:command, ignore:'*', hook-build: "sh src/install_host_app.sh firefox"
+#zplug 'samhh/bukubrow-host', as:command, ignore:'*', hook-build: "make build-linux-x64 && cd release && unzip build-linux-x64.zip && ./bukubrow-linux-x64 --install-firefox"
+
+#zplug '~/.cfg/pubfiles/zsh', as:command, from:local, use:"dotsync"
+#zplug '~/.scripts',          as:command, from:local, use:"*/*"
+# zplug "jimeh/tmuxifier",     as:command, use:"bin/*"
+# zplug 'gitwatch/gitwatch',   as:command, use:'gitwatch.sh', rename-to:'gitwatch'
+
+#zplug "b4b4r07/easy-oneliner", if:"which fzf"
+#zplug wyntau/fzf-zsh, depth:1
+#zplug 'zpm-zsh/colorize'
+#zplug "zsh-users/zsh-completions"
+#zplug 'endaaman/lxd-completion-zsh'
+#zplug 'jplitza/zsh-virsh-autocomplete'
+#zplug marlonrichert/zsh-autocomplete
+#zplug zsh-users/zsh-syntax-highlighting, depth:1
+#zplug 'zdharma/fast-syntax-highlighting'
+
+#zplug "$HOME/.tmux/bin",        from:local, as:command, use:'*'
+zplug 'zplug/zplug',            depth:1, hook-build:'zplug --self-manage'
+zplug 'Valiev/almostontop',     depth:1
+zplug 'mafredri/zsh-async',     depth:1
+zplug 'romkatv/powerlevel10k',  depth:1, as:theme
+zplug 'Aloxaf/fzf-tab',         depth:1, hook-load:'enable-fzf-tab'
+#zplug hchbaw/zce.zsh, hook-load:'bindkey "^S" zce'
+
+zplug load

@@ -14,3 +14,4 @@ SSH_AGENT_PID             DEFAULT=
 SSH_AUTH_SOCK             DEFAULT=${GNUPGHOME}/S.gpg-agent.ssh
 DBUS_SESSION_BUS_ADDRESS  DEFAULT=unix:path=@{HOME}/.dbus-session
 TESTVAR                   DEFAULT=testvar
+AIE                       DEFAULT=aie

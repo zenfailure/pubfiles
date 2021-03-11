@@ -1,0 +1,5 @@
+#!/bin/sh
+
+publicip=$(cgexec -g net_cls:wan dig +short myip.opendns.com @resolver1.opendns.com)
+
+echo -n "$publicip"

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+gpg2 --list-keys --fingerprint --with-keygrip "$@"

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ $# -lt 1 ]; then
+  echo not enough arguments
+  echo usage: $0 fontname [fontsize]
+  exit 1
+fi
+
+fontname="$1"
+fontsize="${2:-16}"
+
+if ! (fc-list | cut -d: -f2 | sort -u | grep -i "$fontname nerd font mono"); then
+  echo "font $fontname nerd font mono not found in fc-list"
+  exit 1
+fi
+
+sed -r "s/base/${fontname}/;s/size=16/size=${fontsize}/" ~/.xresources.d/fonts/base > ~/.xresources.d/fonts/$fontname
+ln -sf ~/.xresources.d/fonts/$fontname ~/.xresources.d/font
+xrdb -merge ~/.xresources.d/font
+exit 0

@@ -1,0 +1,12 @@
+#tmux set-hook -g client-detached reload-env
+#tmux set-hook -g client-attached reload-env
+#tmux set-hook -g session-created reload-env
+
+#tmux set-hook -g client-detached reset-icon
+#tmux set-hook -g client-attached reset-icon
+
+tmux set-hook -g client-attached hooks-attach
+tmux set-hook -g client-detached hooks-detach
+
+tmux set-hook -g session-created hooks-created
+tmux set-hook -g client-session-changed hooks-changed

@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+[[ -n /home/maiz/.zplug/cache ]] && rm -rf /home/maiz/.zplug/cache
+[[ -n /home/maiz/.zplug/bin ]] && rm -rf /home/maiz/.zplug/bin
+exit 0

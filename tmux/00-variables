@@ -1,0 +1,16 @@
+[[ -n $TMUX_VARS_LOADED ]] && return 1 || readonly TMUX_VARS_LOADED=1
+
+TMUX_CONFIG_DIR="$HOME/.tmux"
+TMUX_PLUGIN_DIR="$TMUX_CONFIG_DIR/plugin"
+
+TMUX_BIN_DIR="$TMUX_CONFIG_DIR/bin"
+
+VRUN="$TMUX_BIN_DIR/vrun"
+
+declare -A TMUX_PLUGINS
+
+TMUX_PLUGINS=(
+    [extrakto]=tmux-extrakto
+    [logging]=tmux-logging
+    [easy-motion]=tmux-easy-motion
+    )

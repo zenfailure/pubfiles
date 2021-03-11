@@ -1,0 +1,11 @@
+#!/bin/sh
+
+vt="$1"
+
+re='^[0-9]+$'
+
+if ! [[ $vt =~ $re ]]; then
+    exit 1
+fi
+
+exec sudo chvt "$vt"

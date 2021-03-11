@@ -1,0 +1,226 @@
+#!/usr/bin/env bash
+
+DIR=$(cd $(dirname $(realpath ${BASH_SOURCE[0]})) >/dev/null 2>&1 && pwd)
+
+VRUN="$DIR/vrun"
+RMUX='$HOME/.tmux/bin/vmux'
+
+# add tmuxifier option
+
+function usage
+{
+    echo "$0 [-hnric] [-s session-name] [ssh-host]"
+    echo '  -r remove session'
+    echo '  -i ignore $SSH_CONNECTION variable'
+    echo "  -n do not automatically add user and hostname to the session name"
+    echo "  -c sync remote config files and exit"
+    echo "  -h print this help"
+    exit 1
+}
+
+function sync_config
+{
+    local tmux_realpath
+    local tmux_relapath
+    local tmux_rsyncdir
+
+    tmux_realpath="$(realpath $HOME/.cfg/pubfiles)"
+    tmux_relapath="${tmux_realpath#$HOME/}"
+    tmux_rsyncdir="$HOME/./$tmux_relapath"
+
+    rsync -a --relative --update --links --backup --info=progress2 \
+        "$tmux_rsyncdir" "$HOST":
+    #ssh $HOST "ln -svf \$HOME/$tmux_relapath   \$HOME/.tmux; "\
+    #          "ln -svf \$HOME/.tmux/tmux.conf \$HOME/.tmux.conf"
+    ssh $HOST "ansible-playbook \$HOME/$tmux_relapath/all.yaml"
+}
+
+function random_unused_port
+{
+    local port=$(shuf -i 1024-65535 -n 1)
+    ss -lat | grep -q $port
+    if [[ $? == 1 ]] ; then
+        echo $port
+    else
+        random_unused_port
+    fi
+}
+
+function remove
+{
+    if [[ -n "$HOST" ]]; then
+        SESSION=$(parse_host)
+        # First, try and kill the remote session
+        if ssh $HOST tmux has-session -t "$SESSION" &>/dev/null; then
+            ssh $HOST tmux kill-session -t "$SESSION"
+            if [[ $? == 0 ]]; then
+                echo "Remote session '$SESSION' has been killed."
+            else
+                echo "Killing remote session '$SESSION' failed."
+            fi
+        else
+            echo "No remote session '$SESSION' could be found."
+            exit 1
+        fi
+
+        # Now, kill the mirroring local session
+        if tmux has-session -t "$SESSION" &>/dev/null; then
+            tmux kill-session -t "$SESSION"
+            if [[ $? == 0 ]]; then
+                echo "Local session '$SESSION' has been killed."
+            else
+                echo "Killing local session '$SESSION' failed."
+            fi
+        else
+            echo "No local session '$SESSION' could be found."
+            exit 1
+        fi
+    else
+        if [[ -z "$NORENAME" ]]; then
+            SESSION="$SESSION/$(whoami)/$(hostname)"
+        fi
+        if tmux has-session -t "$SESSION" &>/dev/null; then
+            tmux kill-session -t "$SESSION"
+            if [[ $? == 0 ]]; then
+                echo "Local session '$SESSION' has been killed."
+            else
+                echo "Killing local session '$SESSION' failed."
+            fi
+        else
+            echo "No local session '$SESSION' could be found."
+            exit 1
+        fi
+    fi
+    exit 0
+}
+
+function parse_host
+{
+    if ! grep -q -i "^Host $HOST\$" ~/.ssh/config; then
+        echo "Provided host '$HOST' cannot be found in ssh config file."
+        echo "Please change your ssh config file accordingly."
+        exit 1
+    else
+        USER=$(ssh -G "$HOST" | grep '^user ' | awk '{print $2}')
+    fi
+    echo "$SESSION/$USER/$HOST"
+}
+
+function lvmux
+{
+    if [[ -z "$NORENAME" ]]; then
+        SESSION="$SESSION/$(whoami)/$(hostname)"
+    fi
+
+    if tmux has-session -t "$SESSION" &>/dev/null ; then
+        if [[ -z "$TMUX" ]]; then
+            eval $PRE exec tmux attach-session -t "$SESSION"
+        else
+            eval $PRE exec tmux switch-client -t "$SESSION"
+        fi
+    else
+        tmux new-session -d -s "$SESSION"
+        if [[ -z "$TMUX" ]]; then
+            eval $PRE exec tmux attach-session -t "$SESSION"
+        else
+            eval $PRE exec tmux switch-client -t "$SESSION"
+        fi
+    fi
+}
+
+function rvmux
+{
+
+    SESSION=$(parse_host)
+    if command -v autossh &>/dev/null; then
+        SSH="autossh -M $(random_unused_port):$(random_unused_port)"
+    fi
+    local remcmd="$RMUX -n -i -s $SESSION"
+    local sshcmd="$SSH -t $HOST '$remcmd'"
+
+    if tmux has-session -t "$SESSION" &>/dev/null; then
+        if [[ -z "$TMUX" ]]; then
+            eval $PRE exec tmux attach-session -t "$SESSION"
+        else
+            eval $PRE exec tmux switch-client -t "$SESSION"
+        fi
+    else
+        sync_config
+        tmux new-session -d -s "$SESSION" "$sshcmd"
+        tmux run "$VRUN switch_sendkeys_mode"
+        if [[ -z "$TMUX" ]]; then
+            eval $PRE exec tmux attach-session -t "$SESSION"
+        else
+            eval $PRE exec tmux switch-client -t "$SESSION"
+        fi
+    fi
+}
+
+function main
+{
+    while getopts ":hnrics:" opt; do
+        case $opt in
+            h)
+                usage
+                ;;
+            n)
+                NORENAME=1
+                ;;
+            r)
+                REMOVE=1
+                ;;
+            i)
+                IGNORESSH=1
+                ;;
+            c)
+                SYNCCONFIG=1
+                ;;
+            s)
+                SESSION="$OPTARG"
+                ;;
+            \?)
+                echo "Invalid option: $OPTARG."
+                usage
+                ;;
+            :)
+                echo "Invalid option: $OPTARG requires an argument."
+                usage
+                ;;
+        esac
+    done
+    shift $((OPTIND - 1))
+
+    if [[ -n "$SSH_CONNECTION" && -z "$IGNORESSH" ]]; then
+        echo "Starting vmux from a remote SSH connection is not the point."
+        exit 1
+    fi
+
+    if [[ -z "$SESSION" ]]; then
+        SESSION=mux
+    fi
+
+    HOST="$1"
+
+    if [[ -n "$REMOVE" ]]; then
+        remove
+    fi
+
+    if [[ "$TERM" = linux  && $(tty) =~ /dev/pts/.* ]]; then
+        PRE='TERM=fbterm'
+    fi
+
+    SSH=ssh
+    if [[ -z "$HOST" ]]; then
+        lvmux
+    else
+        if [[ -n "$SYNCCONFIG" ]]; then
+            sync_config
+            exit 0
+        else
+            rvmux
+        fi
+    fi
+    exit 0
+}
+
+main "$@"

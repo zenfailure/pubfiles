@@ -1,0 +1,50 @@
+[ -n "$TMUX_HELPERS_LOADED" ] && return || readonly TMUX_HELPERS_LOADED=1
+
+vset() { tmux set-option -gs "$1" "${@:2}"; }
+sset() { tmux set-option -g  "$1" "${@:2}"; }
+wset() { tmux set-option -gw "$1" "${@:2}"; }
+
+umap() { tmux bind-key -T "$1" "$2" "${@:3}"; }
+
+kmap() { tmux bind-key -T "$1" "$2" "${@:3}";
+         tmux bind-key -T send-keys "$2" send-keys "$2"; }
+
+dmap() { tmux bind-key -T "$1" "$2" "${@:3}";
+         tmux bind-key -T send-keys "$2" "${@:3}"; }
+
+block()
+{
+    local fmt="$1"
+    local iBG="$2"
+    local iFG="$3"
+    local eBG="$4"
+    local SEP="$5"
+    local TYPE="$6"
+
+    local iSTYLE="#[bg=$iBG,fg=$iFG]"
+    local eSTYLE="#[fg=$eBG,bg=$iBG]"
+    local aSTYLE="#[bg=$eBG,fg=$iBG]"
+    local PRESEP=" "
+    local POSTSEP=" "
+
+    if [[ "$SEP" == "PRE" ]]; then
+        PRESEP=""
+    elif [[ "$SEP" == "POST" ]]; then
+        POSTSEP=""
+    elif [[ "$SEP" == "BOTH" ]]; then
+        PRESEP=""
+        POSTSEP=""
+    fi
+
+    if [[ "$TYPE" == "WIN" ]]; then
+        iSTYLE="#[bg=$iBG,fg=#{?window_bell_flag,$winlist_bell_fg,#{?window_activity_flag,$winlist_urgent_fg,$iFG}}]"
+        fmt="#{?window_zoomed_flag,[,}$fmt#{?window_zoomed_flag,],}"
+    fi
+
+    echo -n "$eSTYLE"
+    echo -n "$PRESEP"
+    echo -n "$iSTYLE"
+    echo -n "$fmt"
+    echo -n "$aSTYLE"
+    echo -n "$POSTSEP"
+}

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+publicip=$(cgexec -g net_cls:wan curl -sf ipinfo.io/ip)
+location=$(cgexec -g net_cls:wan curl -sf ipinfo.io/country)
+
+echo -n "$publicip($location)"
